@@ -11,7 +11,7 @@ export default function LoginPage() {
           </a>
         </div>
 
-        <h4 className="text-center text-2xl font-bold mb-4">Denaria</h4>
+        <h4 className="text-center text-2xl font-bold mb-4">DENARIA</h4>
 
         <form className="space-y-5">
           <div>
