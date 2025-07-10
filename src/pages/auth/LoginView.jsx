@@ -19,19 +19,16 @@ export default function LoginPage() {
     console.log("Password: "+password)
     try {
       const response = await login(email, password);
+      
+      console.log('Réponse API login:', response.token);
+      if (response && response.token) {
+        const token = response.token;
+        localStorage.setItem('authToken', token);
+        navigate('/admin');
+      } else {
+        setError(response.data?.message || 'Erreur lors de la connexion');
+      }
 
-       const contentType = response.headers.get('Content-Type');
-        if (contentType && contentType.includes('application/json')) {
-          const data = await response.json(); // Parse la réponse JSON
-
-          console.log(data); // Affiche la réponse pour déboguer
-          console.log("Response: "+response)
-          console.log("Response DATA: "+response.data)
-          const token = response.data.token;
-          localStorage.setItem('authToken', token);
-        }       
-
-      navigate('/admin'); // ou une autre route protégée
     } catch (err) {
         console.error(err);
         if (err.response && err.response.data && err.response.data.message) {
