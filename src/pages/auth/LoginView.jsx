@@ -1,96 +1,88 @@
-// 📁 LoginPage.jsx (authentification avec token JWT)
-
 import React, { useState } from 'react';
-import DenariaLogo from "../../assets/denaria_ico.png";
+import DenariaLogo from '../../assets/denaria_ico.png';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../../api/Auth';
+import { toast } from 'react-toastify';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setError(null);
+    setLoading(true);
 
-    console.log("Email: "+email)
-    console.log("Password: "+password)
     try {
       const response = await login(email, password);
-      
-      console.log('Réponse API login:', response.token);
       if (response && response.token) {
-        const token = response.token;
-        localStorage.setItem('authToken', token);
+        localStorage.setItem('authToken', response.token);
+        toast.success('Connexion réussie !', {
+          position: 'bottom-right',
+          autoClose: 1000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
         navigate('/admin');
       } else {
         setError(response.data?.message || 'Erreur lors de la connexion');
       }
-
     } catch (err) {
-        console.error(err);
-        if (err.response && err.response.data && err.response.data.message) {
-          setError(err.response.data.message); // message détaillé du backend
-        } else {
-          setError('Email ou mot de passe invalide.');
-        }
+      console.error(err);
+      if (err.response && err.response.data && err.response.data.message) {
+        setError(err.response.data.message);
+      } else {
+        setError('Email ou mot de passe invalide.');
       }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="max-w-xl w-full p-10 bg-white shadow-md rounded-lg">
-        <div className="flex justify-center mb-0">
-          <a href="/" className="flex items-center">
-            <img src={DenariaLogo} alt="Logo denaria" className="w-24 h-24 m-0 p-0 block" />
-          </a>
-        </div>
-
-        <h4 className="text-center text-2xl font-bold mb-4">DENARIA</h4>
-
-        <form className="space-y-5" onSubmit={handleLogin}>
-          <div>
-            <label htmlFor="email" className="block text-gray-700">Email</label>
-            <input
-              type="text"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Entrer votre adresse email"
-              className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
-              autoFocus
-            />
+    <div className='container-fluid min-vh-100 d-flex align-items-center justify-content-center bg-light'>
+      <div className='card shadow w-100' style={{ maxWidth: '600px' }}>
+        <div className='card-body p-4'>
+          <div className='d-flex justify-content-center mb-2'>
+            <a href='/' className='d-flex align-items-center'>
+              <img src={DenariaLogo} alt='Logo denaria' style={{ width: '80px', height: '80px' }} />
+            </a>
           </div>
-
-          <div>
-            <label htmlFor="password" className="block text-gray-700">Mot de passe</label>
-            <div className="relative">
-              <input
-                type="password"
-                id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
-              />
-              <span className="absolute inset-y-0 right-3 flex items-center text-gray-400 cursor-pointer">
-                <i className="ti ti-eye-off"></i>
-              </span>
+          <h4 className='text-center mb-4'>DENARIA</h4>
+          <form onSubmit={handleLogin}>
+            <div className='mb-3'>
+              <label htmlFor='email' className='form-label'>
+                Email
+              </label>
+              <input type='email' id='email' className='form-control' placeholder='Entrer votre adresse email' value={email} onChange={(e) => setEmail(e.target.value)} autoFocus required />
             </div>
-          </div>
-
-          {error && <p className="text-red-600 text-sm text-center">{error}</p>}
-
-          <button type="submit" className="w-full bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700">
-            Se connecter
-          </button>
-
-          <div className=' text-center'>
-            <a href="/forgot-password" className="text-primary hover:underline">Mot de passe oublié ?</a>
-          </div>
-        </form>
+            <div className='mb-3'>
+              <label htmlFor='password' className='form-label'>
+                Mot de passe
+              </label>
+              <div className='input-group'>
+                <input type='password' id='password' className='form-control' placeholder='••••••••' value={password} onChange={(e) => setPassword(e.target.value)} required />
+                <span className='input-group-text'>
+                  <i className='ti ti-eye-off'></i>
+                </span>
+              </div>
+            </div>
+            {error && <p className='text-danger text-center small'>{error}</p>}
+            <button type='submit' disabled={loading} className='btn btn-primary w-100'>
+              {loading ? 'Connexion en cours...' : 'Se connecter'}
+            </button>
+            <div className='text-center mt-2'>
+              <a href='/forgot-password' className='text-decoration-none'>
+                Mot de passe oublié ?
+              </a>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );
