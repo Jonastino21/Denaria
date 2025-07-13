@@ -3,5 +3,34 @@
 }
 
 .bg-primary {
-  color:var(--primary);
+  background-color: #7367F0 !important;
+}
+.btn-primary{
+  background-color: #7367F0 !important;
+}
+.btn-outline-primary{
+ color: #7367F0 !important;
+}
+
+.card {
+  border: none !important;
+  box-shadow: none !important;
+  background-color: transparent; 
+}
+
+.card-body {
+  background-color: transparent; 
+}
+
+.form-control {
+  border: 1px solid #dee2e6; 
+}
+
+.input-group-text,
+.form-select {
+  border: 1px solid #dee2e6;
+}
+.card-header {
+  border-bottom: none !important;
+  background-color: transparent !important;
 }

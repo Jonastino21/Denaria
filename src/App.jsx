@@ -5,7 +5,10 @@ import './App.css'
 import LoginPage from './pages/auth/LoginView';
 import Dashboard from './pages/admin/Dashboard';
 import DashboardLayout from './components/layouts/AdminLayout';
+import ProductManagement from './pages/admin/products/productManagement';
 import { ToastContainer } from 'react-toastify'
+import './components/layouts/adminlayout.css'
+import NewProduct from './pages/admin/products/newProducts';
 
 function App() {
   return (
@@ -21,6 +24,8 @@ function App() {
             </ProtectedRoute>
           }>
           <Route index element={<Dashboard />} />
+          <Route path='products/list' element={<ProductManagement />} />
+          <Route path='products/add' element={<NewProduct/>} />
         </Route>
 
         <Route path='*' element={<Navigate to='/' replace />} />

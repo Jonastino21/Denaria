@@ -46,7 +46,6 @@ export default function Dashboard() {
             </Swiper>
           </Card>
         </Col>
-        {/* / Website Analytics */}
         <Col xl={3} sm={6} className='px-0'>
           <Card className='h-100'>
             <Card.Header className='pb-0'>

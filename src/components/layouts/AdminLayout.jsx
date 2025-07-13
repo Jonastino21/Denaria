@@ -1,12 +1,24 @@
-import React, { useState } from 'react';
-import { Outlet, NavLink } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Outlet, NavLink, useLocation } from 'react-router-dom';
 import LayoutNavbar from '../common/navbar';
 import { HouseFill, BoxSeam, Tags, CartCheck, PeopleFill, Truck, CreditCard, PersonBadge, GearFill } from 'react-bootstrap-icons';
 import Logo from '../../assets/denaria_ico.png';
 import './adminlayout.css';
+import { TbChevronRight, TbChevronDown } from 'react-icons/tb';
+import { BsCircle } from 'react-icons/bs';
 
 export default function DashboardLayout() {
   const [menuOpen, setMenuOpen] = useState(true);
+  const [isProductMenuOpen, setIsProductMenuOpen] = useState(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname.startsWith('/admin/products')) {
+      setIsProductMenuOpen(true);
+    } else {
+      setIsProductMenuOpen(false);
+    }
+  }, [location.pathname]);
 
   return (
     <div className='d-flex flex-column vh-100'>
@@ -30,18 +42,44 @@ export default function DashboardLayout() {
           <nav className='mt-0'>
             <ul className='nav gap-3 flex-column'>
               <li className='nav-item'>
-                <NavLink to='/admin' className={({ isActive }) => `nav-link d-flex align-items-center text-secondary ${isActive ? 'active-bg' : ''}`}>
+                <NavLink to='/admin' end className={({ isActive }) => `nav-link d-flex align-items-center text-secondary ${isActive ? 'active-bg' : ''}`}>
                   <HouseFill className='me-2 text-secondary' />
                   <span>Tableau de bord</span>
                   <span className='badge bg-danger rounded-pill ms-auto'>5</span>
                 </NavLink>
               </li>
+
               <li className='nav-item'>
-                <NavLink to='/admin/products' className={({ isActive }) => `nav-link d-flex align-items-center text-secondary ${isActive ? 'active-bg' : ''}`}>
+                <div onClick={() => setIsProductMenuOpen(!isProductMenuOpen)} className='nav-link d-flex align-items-center text-secondary' style={{ cursor: 'pointer' }}>
                   <BoxSeam className='me-2 text-secondary' />
-                  Produits
-                </NavLink>
+                  <span>Produits</span>
+                  <span className='ms-auto fs-5 text-bold'>{isProductMenuOpen ? <TbChevronDown /> : <TbChevronRight />}</span>
+                </div>
+
+                {isProductMenuOpen && (
+                  <ul className='nav flex-column gap-2 mt-1'>
+                    <li className='nav-item'>
+                      <NavLink to='/admin/products/list' className={({ isActive }) => `sub-link nav-link ${isActive ? 'sub-active-bg text-primary' : ''}`}>
+                        <BsCircle size={10} className='me-2' />
+                        Liste des produits
+                      </NavLink>
+                    </li>
+                    <li className='nav-item'>
+                      <NavLink to='/admin/products/add' className={({ isActive }) => `sub-link nav-link d-flex align-items-center ${isActive ? 'sub-active-bg text-primary' : ''}`}>
+                        <BsCircle size={10} className='me-2' />
+                        Ajouter un produit
+                      </NavLink>
+                    </li>
+                    <li className='nav-item'>
+                      <NavLink to='/admin/products/categories' className={({ isActive }) => `sub-link nav-link d-flex align-items-center ${isActive ? 'sub-active-bg text-primary' : ''}`}>
+                        <BsCircle size={10} className='me-2' />
+                        Catégorie de produits
+                      </NavLink>
+                    </li>
+                  </ul>
+                )}
               </li>
+
               <li className='nav-item'>
                 <NavLink to='/admin/category' className={({ isActive }) => `nav-link d-flex align-items-center text-secondary ${isActive ? 'active-bg' : ''}`}>
                   <Tags className='me-2 text-secondary' />
@@ -88,7 +126,7 @@ export default function DashboardLayout() {
           </nav>
         </aside>
 
-        <main className='flex-grow-1 p-4 overflow-auto'>
+        <main className='flex-grow-1 bg-light p-4 overflow-auto'>
           <LayoutNavbar />
           <Outlet />
         </main>
