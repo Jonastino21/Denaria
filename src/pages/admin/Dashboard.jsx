@@ -16,7 +16,7 @@ export default function Dashboard() {
       <Row className='g-4'>
         
         <Col lg={6}>
-          <Card className='bg-primary text-white p-3'>
+          <Card className='bg-primari text-white p-3'>
             <Swiper spaceBetween={20} pagination={{ clickable: true }} autoplay={{ delay: 3000 }} modules={[Pagination, Autoplay]}>
               {dashboardData.analyticsSlides.map((slide, idx) => (
                 <SwiperSlide key={idx}>
