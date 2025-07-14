@@ -12,7 +12,7 @@ import { dashboardData } from '../../data/dashboardMock';
 
 export default function Dashboard() {
   return (
-    <Container fluid className='container flex-grow-1 py-4'>
+    <div className='container min-vh-100 p-4'>
       <Row className='g-4'>
         
         <Col lg={6}>
@@ -114,6 +114,6 @@ export default function Dashboard() {
           </Card>
         </Col>
       </Row>
-    </Container>
+    </div>
   );
 }
