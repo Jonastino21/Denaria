@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FiEye, FiEdit, FiTrash2, FiX, FiSave, FiUpload } from 'react-icons/fi';
-import { salesData, productsMock, categories, statuses} from '../../../data/productsMock';
+import { salesData, productsMock, categories, statuses } from '../../../data/productsMock';
 
 const ProductManagement = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -9,7 +9,7 @@ const ProductManagement = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const [modalMode, setModalMode] = useState('view'); // 'view' ou 'edit'
+  const [modalMode, setModalMode] = useState('view');
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [editedProduct, setEditedProduct] = useState(null);
 
@@ -151,10 +151,12 @@ const ProductManagement = () => {
                     <i className='fas fa-download me-1'></i>
                     Exporter
                   </button>
-                  <button className='btn btn-primary btn-sm flex-fill' style={{ height: 40 }}>
-                    <i className='fas fa-plus me-1'></i>
-                    Ajouter un produit
-                  </button>
+                  <a href='/admin/products/add' style={{ textDecoration: 'none' }}>
+                    <button className='btn btn-primary btn-sm flex-fill' style={{ height: 40 }}>
+                      <i className='fas fa-plus me-1'></i>
+                      Ajouter un produit
+                    </button>
+                  </a>
                 </div>
               </div>
             </div>
