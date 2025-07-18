@@ -10,6 +10,8 @@ import { BsCircle } from 'react-icons/bs';
 export default function DashboardLayout() {
   const [menuOpen, setMenuOpen] = useState(true);
   const [isProductMenuOpen, setIsProductMenuOpen] = useState(false);
+  const [isCategorieMenuOpen, setIsCategorieMenuOpen] = useState(false);
+  const [isCommandeMenuOpen, setIsCommandeMenuOpen] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
@@ -17,6 +19,18 @@ export default function DashboardLayout() {
       setIsProductMenuOpen(true);
     } else {
       setIsProductMenuOpen(false);
+    }
+
+    if (location.pathname.startsWith('/admin/categories')) {
+      setIsCategorieMenuOpen(true);
+    } else {
+      setIsCategorieMenuOpen(false);
+    }
+
+    if (location.pathname.startsWith('/admin/commande')) {
+      setIsCommandeMenuOpen(true);
+    } else {
+      setIsCommandeMenuOpen(false);
     }
   }, [location.pathname]);
 
@@ -52,7 +66,7 @@ export default function DashboardLayout() {
               <li className='nav-item'>
                 <div onClick={() => setIsProductMenuOpen(!isProductMenuOpen)} className='nav-link d-flex align-items-center text-secondary' style={{ cursor: 'pointer' }}>
                   <BoxSeam className='me-2 text-secondary' />
-                  <span>Produits</span>
+                  <span>Gestion des Produits</span>
                   <span className='ms-auto fs-5 text-bold'>{isProductMenuOpen ? <TbChevronDown /> : <TbChevronRight />}</span>
                 </div>
 
@@ -81,16 +95,53 @@ export default function DashboardLayout() {
               </li>
 
               <li className='nav-item'>
-                <NavLink to='/admin/category' className={({ isActive }) => `nav-link d-flex align-items-center text-secondary ${isActive ? 'active-bg' : ''}`}>
+                <div onClick={() => setIsCategorieMenuOpen(!isCategorieMenuOpen)} className='nav-link d-flex align-items-center text-secondary' style={{ cursor: 'pointer' }}>
                   <Tags className='me-2 text-secondary' />
-                  Catégories
-                </NavLink>
+                  <span>Gestion des Catégories</span>
+                  <span className='ms-auto fs-5 text-bold'>{isCategorieMenuOpen ? <TbChevronDown /> : <TbChevronRight />}</span>
+                </div>
+
+                {isCategorieMenuOpen && (
+                  <ul className='nav flex-column gap-2 mt-1'>
+                    <li className='nav-item'>
+                      <NavLink to='/admin/Categories/add' className={({ isActive }) => `sub-link nav-link d-flex align-items-center ${isActive ? 'sub-active-bg text-primary' : ''}`}>
+                        <BsCircle size={10} className='me-2' />
+                        Ajouter un Catégorie
+                      </NavLink>
+                    </li>
+                    <li className='nav-item'>
+                      <NavLink to='/admin/Categories/list' className={({ isActive }) => `sub-link nav-link ${isActive ? 'sub-active-bg text-primary' : ''}`}>
+                        <BsCircle size={10} className='me-2' />
+                        Liste des Catégories
+                      </NavLink>
+                    </li>
+                  </ul>
+                )}
               </li>
+
               <li className='nav-item'>
-                <NavLink to='/admin/order' className={({ isActive }) => `nav-link d-flex align-items-center text-secondary ${isActive ? 'active-bg' : ''}`}>
+                <div onClick={() => setIsCommandeMenuOpen(!isCommandeMenuOpen)} className='nav-link d-flex align-items-center text-secondary' style={{ cursor: 'pointer' }}>
                   <CartCheck className='me-2 text-secondary' />
-                  Commandes
-                </NavLink>
+                  <span>Gestion de Commande</span>
+                  <span className='ms-auto fs-5 text-bold'>{isCommandeMenuOpen ? <TbChevronDown /> : <TbChevronRight />}</span>
+                </div>
+
+                {isCommandeMenuOpen && (
+                  <ul className='nav flex-column gap-2 mt-1'>
+                    <li className='nav-item'>
+                      <NavLink to='/admin/commande/add' className={({ isActive }) => `sub-link nav-link d-flex align-items-center ${isActive ? 'sub-active-bg text-primary' : ''}`}>
+                        <BsCircle size={10} className='me-2' />
+                        Ajouter un 
+                      </NavLink>
+                    </li>
+                    <li className='nav-item'>
+                      <NavLink to='/admin/commande/list' className={({ isActive }) => `sub-link nav-link ${isActive ? 'sub-active-bg text-primary' : ''}`}>
+                        <BsCircle size={10} className='me-2' />
+                        Liste des Commandes
+                      </NavLink>
+                    </li>
+                  </ul>
+                )}
               </li>
               <li className='nav-item'>
                 <NavLink to='/admin/client' className={({ isActive }) => `nav-link d-flex align-items-center text-secondary ${isActive ? 'active-bg' : ''}`}>

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const USE_MOCK = true;  // changer en false pour utiliser la vraie api 
+const USE_MOCK = false;  // changer en false pour utiliser la vraie api 
 
 export async function login(email, password) {
   if (USE_MOCK) {
