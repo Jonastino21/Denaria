@@ -79,12 +79,12 @@ const NewProduct = () => {
     }
   };
 
-  const addVariant = () => {
-    setProduct((prev) => ({
-      ...prev,
-      variants: [...prev.variants, { option: 'Size', value: 'Enter size' }],
-    }));
-  };
+  // const addVariant = () => {
+  //   setProduct((prev) => ({
+  //     ...prev,
+  //     variants: [...prev.variants, { option: 'Size', value: 'Enter size' }],
+  //   }));
+  // };
 
   const removeTag = (tagIndex) => {
     setProduct((prev) => ({
