@@ -66,7 +66,7 @@ export default function LoginPage() {
                 Mot de passe
               </label>
               <div className='input-group'>
-                <input type='password' id='password' className='form-control' placeholder='••••••••' value={password} onChange={(e) => setPassword(e.target.value)} required />
+                <input type='password' id='password' className='form-control' placeholder='Entrer votre mot de passe' value={password} onChange={(e) => setPassword(e.target.value)} required />
                 <span className='input-group-text'>
                   <i className='ti ti-eye-off'></i>
                 </span>

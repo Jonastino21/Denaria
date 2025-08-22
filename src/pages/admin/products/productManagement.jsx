@@ -2,35 +2,45 @@ import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FiEye, FiEdit, FiTrash2, FiX, FiSave, FiUpload } from 'react-icons/fi';
 import { salesData, productsMock, categories, statuses } from '../../../data/productsMock';
+import Product from '../../../api/Product'; // Assuming you have an API module to fetch products
 
 const ProductManagement = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [showEntries, setShowEntries] = useState(7);
+  const [showEntries, setShowEntries] = useState(5);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [modalMode, setModalMode] = useState('view');
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [editedProduct, setEditedProduct] = useState(null);
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
+     Product()
+      .then(data => setProducts(data))
+      .catch(error => console.error(error));
+
     const timer = setTimeout(() => setIsLoading(false), 2000);
     return () => clearTimeout(timer);
   }, []);
 
+
   const getChangeColor = (type) => {
     switch (type) {
-      case 'positive':
+      case 'enabled':
         return 'text-success';
-      case 'negative':
+      case 'disabled':
         return 'text-danger';
       default:
         return 'text-muted';
     }
   };
 
-  const filteredProducts = productsMock.filter((product) => product.name.toLowerCase().includes(searchTerm.toLowerCase())).slice(0, showEntries);
-
+   const filteredProducts = products.filter(product =>
+    product.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+  // const filteredProducts = Product.filter();
+  console.log('Filtered Products:', filteredProducts);
   const isAllSelected = filteredProducts.length > 0 && selectedProducts.length === filteredProducts.length;
 
   const toggleSelectAll = () => {
@@ -138,7 +148,7 @@ const ProductManagement = () => {
               <div className='col-md-4'></div>
               <div className='col-md-1'>
                 <select className='form-select form-select-sm' value={showEntries} onChange={(e) => setShowEntries(Number(e.target.value))} style={{ height: 40 }}>
-                  <option value={7}>7</option>
+                  <option value={5}>5</option>
                   <option value={15}>15</option>
                   <option value={25}>25</option>
                   <option value={50}>50</option>
@@ -147,10 +157,10 @@ const ProductManagement = () => {
 
               <div className='col-md-3'>
                 <div className='d-flex gap-2'>
-                  <button className='btn btn-outline-secondary btn-sm flex-fill' style={{ height: 40 }}>
+                  {/* <button className='btn btn-outline-secondary btn-sm flex-fill' style={{ height: 40 }}>
                     <i className='fas fa-download me-1'></i>
                     Exporter
-                  </button>
+                  </button> */}
                   <a href='/admin/products/add' style={{ textDecoration: 'none' }}>
                     <button className='btn btn-primary btn-sm flex-fill' style={{ height: 40 }}>
                       <i className='fas fa-plus me-1'></i>
@@ -168,12 +178,11 @@ const ProductManagement = () => {
                     <th scope='col' width='50'>
                       <input type='checkbox' className='form-check-input' checked={isAllSelected} onChange={toggleSelectAll} />
                     </th>
+                    <th scope='col'>IMAGE</th>
                     <th scope='col'>PRODUIT</th>
-                    <th scope='col'>CATÉGORIE</th>
-                    <th scope='col'>STOCK</th>
-                    <th scope='col'>SKU</th>
+                    <th scope='col'>CATÉGORIE</th>                                       
                     <th scope='col'>PRIX</th>
-                    <th scope='col'>QTÉ</th>
+                    <th scope='col'>STOCK</th> 
                     <th scope='col'>STATUT</th>
                     <th scope='col'>ACTIONS</th>
                   </tr>
@@ -194,12 +203,11 @@ const ProductManagement = () => {
                         <td>
                           <input type='checkbox' className='form-check-input' checked={selectedProducts.includes(product.id)} onChange={() => toggleSelectOne(product.id)} />
                         </td>
+                        <td>{product.image}</td>
                         <td>{product.name}</td>
                         <td>{product.category}</td>
-                        <td>{product.stock}</td>
-                        <td>{product.sku}</td>
                         <td>{product.price}</td>
-                        <td>{product.quantity}</td>
+                        <td>{product.stock_quantity}</td>
                         <td>
                           <span className={`badge ${getStatusBadge(product.status)}`}>{product.status}</span>
                         </td>

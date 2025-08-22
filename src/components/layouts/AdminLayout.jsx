@@ -84,12 +84,6 @@ export default function DashboardLayout() {
                         Ajouter un produit
                       </NavLink>
                     </li>
-                    <li className='nav-item'>
-                      <NavLink to='/admin/products/categories' className={({ isActive }) => `sub-link nav-link d-flex align-items-center ${isActive ? 'sub-active-bg text-primary' : ''}`}>
-                        <BsCircle size={10} className='me-2' />
-                        Catégorie de produits
-                      </NavLink>
-                    </li>
                   </ul>
                 )}
               </li>
@@ -104,13 +98,13 @@ export default function DashboardLayout() {
                 {isCategorieMenuOpen && (
                   <ul className='nav flex-column gap-2 mt-1'>
                     <li className='nav-item'>
-                      <NavLink to='/admin/Categories/add' className={({ isActive }) => `sub-link nav-link d-flex align-items-center ${isActive ? 'sub-active-bg text-primary' : ''}`}>
+                      <NavLink to='/admin/categories/add' className={({ isActive }) => `sub-link nav-link d-flex align-items-center ${isActive ? 'sub-active-bg text-primary' : ''}`}>
                         <BsCircle size={10} className='me-2' />
                         Ajouter un Catégorie
                       </NavLink>
                     </li>
                     <li className='nav-item'>
-                      <NavLink to='/admin/Categories/list' className={({ isActive }) => `sub-link nav-link ${isActive ? 'sub-active-bg text-primary' : ''}`}>
+                      <NavLink to='/admin/categories/list' className={({ isActive }) => `sub-link nav-link ${isActive ? 'sub-active-bg text-primary' : ''}`}>
                         <BsCircle size={10} className='me-2' />
                         Liste des Catégories
                       </NavLink>
@@ -143,6 +137,7 @@ export default function DashboardLayout() {
                   </ul>
                 )}
               </li>
+
               <li className='nav-item'>
                 <NavLink to='/admin/client' className={({ isActive }) => `nav-link d-flex align-items-center text-secondary ${isActive ? 'active-bg' : ''}`}>
                   <PeopleFill className='me-2 text-secondary' />
