@@ -53,15 +53,15 @@ const NewCategory = () => {
     }
   };
 
-  const getStatusBadge = (status) => {
-    const statusConfig = {
-      Disponible: 'bg-success',
-      'Stock faible': 'bg-warning',
-      Rupture: 'bg-danger',
-      Discontinué: 'bg-secondary',
-    };
-    return statusConfig[status] || 'bg-secondary';
-  };
+  // const getStatusBadge = (status) => {
+  //   const statusConfig = {
+  //     Disponible: 'bg-success',
+  //     'Stock faible': 'bg-warning',
+  //     Rupture: 'bg-danger',
+  //     Discontinué: 'bg-secondary',
+  //   };
+  //   return statusConfig[status] || 'bg-secondary';
+  // };
 
   const handleViewCategory = (Category) => {
     setSelectedCategory(Category);
@@ -128,6 +128,24 @@ const NewCategory = () => {
     description: category.description
   };
 };
+
+function formatDateFromBackend(value) {
+  const [year, month, day, hour, minute, second, nanos] = value;
+
+  // convertir les nanos en millisecondes
+  const ms = Math.floor(nanos / 1_000_000);
+
+  const date = new Date(year, month - 1, day, hour, minute, second, ms);
+
+  // Format dd-mm-yyyy
+  return date.toLocaleDateString('fr-FR', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric'
+  }).replaceAll('/', '-');
+}
+
+
 
 const handleSubmit = (e) => {
   e.preventDefault();
@@ -309,11 +327,9 @@ const handleSubmit = (e) => {
                     </td>
                     <td>{Category.name}</td>
                     <td>{Category.description}</td>
-                    <td>{Category.createdAt}</td>
-                    <td>{Category.updatedAt}</td>
-                    <td>
-                        <span className={`badge ${getStatusBadge(Category.status)}`}>{Category.status}</span>
-                    </td>
+                    <td>{formatDateFromBackend(Category.createdAt)}</td>
+                    <td>{formatDateFromBackend(Category.updatedAt)}</td>
+
                     <td>
                         <button className='btn btn-sm btn-outline-secondary me-2' title='Voir' onClick={() => handleViewCategory(Category)}>
                         <FiEye />

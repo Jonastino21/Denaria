@@ -211,7 +211,10 @@ const ProductManagement = () => {
                         </td>
                         <td>{product.name}</td>
                         <td>{product.category}</td>
-                        <td>{product.price}</td>
+                        <td>
+                          {new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'MGA' }).format(product.price)}
+                        </td>
+
                         <td>{product.stockQuantity}</td>
                         <td>
                             {product.status === 'in_stock' ? (
