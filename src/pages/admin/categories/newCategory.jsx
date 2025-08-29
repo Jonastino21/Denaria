@@ -196,13 +196,6 @@ const handleSubmit = (e) => {
   };
 
 
-  // const addVariant = () => {
-  //   setCategory((prev) => ({
-  //     ...prev,
-  //     variants: [...prev.variants, { option: 'Size', value: 'Enter size' }],
-  //   }));
-  // };
-
 
   return (
     <div className='container min-vh-100 p-4'>

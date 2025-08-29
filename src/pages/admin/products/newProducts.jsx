@@ -54,6 +54,7 @@ const NewProduct = () => {
   const [imageUrl, setImageUrl] = useState('');
   const fileInputRef = useRef(null);
   const navigate = useNavigate();
+  const [selectedFile, setSelectedFile] = useState(null);
 
   
 
@@ -91,6 +92,7 @@ const NewProduct = () => {
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
+      setSelectedFile(file);
       setImagePreview(URL.createObjectURL(file));
       setShowUrlInput(false);
       setImageUrl('');
@@ -145,27 +147,39 @@ const NewProduct = () => {
     return true;
   };
 
-  const buildProductData = () => {
-  return {
-    name: product.name,
-    description: product.description,
-    price: parseFloat(product.basePrice) || 0,
-    stock_quantity: parseInt(product.stock) || 0,
-    category: { id: parseInt(product.category) || 1 },
-    images: imagePreview ? [{ imageUrl: imagePreview }] : []
-  };
-};
+//   const buildProductData = () => {
+//   return {
+//     name: product.name,
+//     description: product.description,
+//     price: parseFloat(product.basePrice),
+//     stock_quantity: parseInt(product.stock) || 1,
+//     category: { id: parseInt(product.category) || 1 },
+//     images: selectedFile ? [selectedFile] : [],
+//   };
+// };
 
   const publishProduct = async () => {
     if (!validateProduct()) return; // arrêt si validation échoue
     try {
+       const formData = new FormData();
+        formData.append('name', product.name);
+        formData.append('description', product.description);
+        formData.append('price', parseFloat(product.basePrice));
+        formData.append('stock_quantity', parseInt(product.stock) || 1);
+        formData.append('category_id', parseInt(product.category) || 1);
+        formData.append('image', selectedFile); // envoi fichier réel
+
+        if (selectedFile) {
+          formData.append('image', selectedFile); // envoi fichier réel
+        }
+        
         const token = localStorage.getItem('authToken');
         const response = await axios.post(
           'http://localhost:9999/api/products/create_product',
-          buildProductData,
+          formData,
         {
           headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'multipart/form-data',
             Authorization: `Bearer ${token}`
           }
         }

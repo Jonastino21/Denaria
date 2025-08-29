@@ -21,6 +21,15 @@ export default async function fetchProducts() {
     });
 
     if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+        // parse JSON body
+    const products = response.data;
+    console.log("Products:", products);
+    // console.log("Token:", localStorage.getItem("authToken"));
+
+
+    if (!response.ok) {
       throw new Error('Erreur lors de la récupération des produits');
     }
 

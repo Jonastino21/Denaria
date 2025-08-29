@@ -94,12 +94,11 @@ const ProductManagement = () => {
 
   const getStatusBadge = (status) => {
     const statusConfig = {
-      Disponible: 'bg-success',
-      'Stock faible': 'bg-warning',
-      Rupture: 'bg-danger',
-      Discontinué: 'bg-secondary',
+      in_stock: 'bg-success',
+      low_stock: 'bg-warning',
+      out_of_stock: 'bg-danger',
     };
-    return statusConfig[status] || 'bg-secondary';
+    return statusConfig[status] ;
   };
 
   return (
@@ -203,14 +202,29 @@ const ProductManagement = () => {
                         <td>
                           <input type='checkbox' className='form-check-input' checked={selectedProducts.includes(product.id)} onChange={() => toggleSelectOne(product.id)} />
                         </td>
-                        <td>{product.image}</td>
+                        <td>
+                          <img 
+                            src={`http://localhost:9999${product.image} `} 
+                            alt={product.name} 
+                            style={{ width: "100px", height: "100px", objectFit: "cover" }} 
+                          />
+                        </td>
                         <td>{product.name}</td>
                         <td>{product.category}</td>
                         <td>{product.price}</td>
-                        <td>{product.stock_quantity}</td>
+                        <td>{product.stockQuantity}</td>
                         <td>
-                          <span className={`badge ${getStatusBadge(product.status)}`}>{product.status}</span>
-                        </td>
+                            {product.status === 'in_stock' ? (
+                              <span className={`badge ${getStatusBadge(product.status)}`}>En stock</span>
+                            ) : product.status === 'low_stock' ? (
+                              <span className={`badge ${getStatusBadge(product.status)}`}>Stock faible</span>
+                            ) : product.status === 'out_of_stock' ? (
+                              <span className={`badge ${getStatusBadge(product.status)}`}>Rupture</span>
+                            ) : (
+                              <span className="badge bg-secondary">Inconnu</span>
+                            )}
+                          </td>
+
                         <td>
                           <button className='btn btn-sm btn-outline-secondary me-2' title='Voir' onClick={() => handleViewProduct(product)}>
                             <FiEye />
@@ -282,8 +296,12 @@ const ProductManagement = () => {
                   <div className='col-md-4 mb-4'>
                     <div className='card h-100 border-0 bg-light'>
                       <div className='card-body d-flex align-items-center justify-content-center'>
-                        <img src={selectedProduct.image} alt={selectedProduct.name} className='img-fluid rounded shadow-sm' style={{ maxHeight: '250px', objectFit: 'cover' }} />
-                      </div>
+                        <img className='img-fluid rounded shadow-sm'
+                            src={`http://localhost:9999${selectedProduct.image} `} 
+                            alt={selectedProduct.name} 
+                            style={{ maxHeight: '250px', objectFit: 'cover' }} 
+                          />                        
+                    </div>
                       {modalMode === 'edit' && (
                         <div className='card-footer bg-transparent text-center'>
                           <button className='btn btn-sm btn-outline-primary'>
@@ -387,7 +405,15 @@ const ProductManagement = () => {
                         <label className='form-label fw-semibold'>Statut</label>
                         {modalMode === 'view' ? (
                           <div className='mt-1'>
-                            <span className={`badge ${getStatusBadge(selectedProduct.status)} fs-6`}>{selectedProduct.status}</span>
+                             {selectedProduct.status === 'in_stock' ? (
+                              <span className={`badge ${getStatusBadge(selectedProduct.status)}`}>En stock</span>
+                            ) : selectedProduct.status === 'low_stock' ? (
+                              <span className={`badge ${getStatusBadge(selectedProduct.status)}`}>Stock faible</span>
+                            ) : selectedProduct.status === 'out_of_stock' ? (
+                              <span className={`badge ${getStatusBadge(selectedProduct.status)}`}>Rupture</span>
+                            ) : (
+                              <span className="badge bg-secondary">Inconnu</span>
+                            )}
                           </div>
                         ) : (
                           <select className='form-select' value={editedProduct.status} onChange={(e) => handleInputChange('status', e.target.value)}>

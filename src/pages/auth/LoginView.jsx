@@ -18,26 +18,40 @@ export default function LoginPage() {
 
     try {
       const response = await login(email, password);
-      if (response && response.token) {
+      if (response.token) {
         localStorage.setItem('authToken', response.token);
         toast.success('Connexion réussie !', {
           position: 'bottom-right',
-          autoClose: 1000,
+          autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
         });
         navigate('/admin');
-      } else {
-        setError(response.data?.message || 'Erreur lors de la connexion');
-      }
+      }  
     } catch (err) {
-      console.error(err);
-      if (err.response && err.response.data && err.response.data.message) {
+      console.error("Status: "+err.code);
+      if(err.code === 'ERR_NETWORK'){
+        toast.error('Erreur de connexion au serveur. Veuillez vérifier que le serveur est en ligne.', {
+          position: 'bottom-right',
+          autoClose: 7000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+      } else if (err.response && err.response.data && err.response.data.message) {
         setError(err.response.data.message);
       } else {
-        setError('Email ou mot de passe invalide.');
+        toast.error('Email ou mot de passe invalide.', {
+          position: 'bottom-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
       }
     } finally {
       setLoading(false);
